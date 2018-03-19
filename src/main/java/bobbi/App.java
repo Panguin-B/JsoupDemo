@@ -4,6 +4,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,17 +15,36 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Hello world!
  */
-public class App {
+public class App implements Job {
+    /*
+    * 通过quartz实现定时任务
+    * 重写Job中的execute方法
+    * */
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
-    public static void main(String[] args) throws IOException {
+        // 设置时间输出格式
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
+        String time = dateFormat.format(new Date());
 
-        jsoupMain();
+        System.out.println(time);
+
+        System.out.println("It`s time to pa");
+        try {
+            jsoupMain();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
 
     private static void jsoupMain() throws IOException {
 
